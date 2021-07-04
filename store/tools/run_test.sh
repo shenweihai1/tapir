@@ -16,8 +16,11 @@ trap '{
 }' INT
 
 # Paths to source code and logfiles.
-srcdir="/homes/sys/naveenks/Research/Tapir"
-logdir="/biggerraid/users/naveenks/tapir"
+# srcdir="/homes/sys/naveenks/Research/Tapir"
+# logdir="/biggerraid/users/naveenks/tapir"
+srcdir="/home/weihshen/Desktop/tapir"
+logdir="/home/weihshen/logs/tapir"
+
 
 # Machines on which replicas are running.
 replicas=("breakout" "pitfall" "qbert")

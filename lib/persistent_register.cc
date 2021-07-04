@@ -28,6 +28,7 @@
  **********************************************************************/
 #include "lib/persistent_register.h"
 
+#include <iostream>
 #include <cstdio>
 #include <cstring>
 #include <unistd.h>
@@ -53,6 +54,8 @@ std::string PersistentRegister::Read() const
     if (!Initialized()) {
         return "";
     }
+
+    std::cout << "persistent path: " << filename_ << std::endl; 
 
     std::FILE *file = OpenFile(filename_, "rb");
 
@@ -85,6 +88,7 @@ std::string PersistentRegister::Read() const
 void PersistentRegister::Write(const std::string &s)
 {
     // Perform the write.
+    std::cout << "Persist write: " << s << " to file_ " << filename_ << std::endl;
     std::FILE *file = OpenFile(filename_, "wb");
     std::size_t num_written =
         std::fwrite(s.c_str(), sizeof(char), s.size(), file);
@@ -110,6 +114,7 @@ std::string PersistentRegister::Filename() { return filename_; }
 std::FILE *PersistentRegister::OpenFile(const std::string &filename,
                                         const std::string &mode)
 {
+    std::cout << "Open file " << filename << ", mode " << mode << std::endl;
     std::FILE *file = std::fopen(filename.c_str(), mode.c_str());
     if (file == nullptr) {
         Panic("%s", std::strerror(errno));

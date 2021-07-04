@@ -65,6 +65,7 @@ tLatency.sort()
 sLatency.sort()
 fLatency.sort()
 
+print "elapsed: ", (end-start)
 print "Transactions(All/Success): ", len(tLatency), len(sLatency)
 print "Abort Rate: ", (float)(len(tLatency)-len(sLatency))/len(tLatency)
 print "Throughput (All/Success): ", len(tLatency)/(end-start), len(sLatency)/(end-start)

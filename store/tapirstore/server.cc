@@ -137,6 +137,11 @@ void
 Server::Sync(const std::map<opid_t, RecordEntry>& record)
 {
     Panic("Unimplemented!");
+    /*
+     * weihshen: from the log history, the Sync and Merge only work for lock server
+     *
+     *
+     */
 }
 
 std::map<opid_t, std::string>
