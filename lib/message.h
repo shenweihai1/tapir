@@ -90,6 +90,7 @@ static __attribute__((unused)) signed char _Message_FileDebugFlag = -1;
 
 #define Debug(msg...)                                   \
         do {                                            \
+		if (Message_DebugEnabled(__FILE__))     \
                         MessageFlags(MSG_DEBUG, msg);   \
         } while (0)
 #define Message_Hexdump(data, len)                      \
