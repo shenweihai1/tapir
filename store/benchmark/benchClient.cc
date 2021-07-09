@@ -11,6 +11,7 @@
 #include "store/strongstore/client.h"
 #include "store/weakstore/client.h"
 #include "store/tapirstore/client.h"
+#include <iostream>
 
 using namespace std;
 
@@ -146,6 +147,7 @@ main(int argc, char **argv)
         {
             char *strtolPtr;
             alpha = strtod(optarg, &strtolPtr);
+	    std::cout << optarg << " : " << alpha << " : " << strtolPtr << std::endl;
             if ((*optarg == '\0') || (*strtolPtr != '\0'))
             {
                 fprintf(stderr,
@@ -215,6 +217,7 @@ main(int argc, char **argv)
 
     // Read in the keys from a file.
     string key, value;
+    value = "aaaaaaaa";
     ifstream in;
     in.open(keysPath);
     if (!in) {
@@ -253,25 +256,31 @@ main(int argc, char **argv)
         beginCount++;
         beginLatency += ((t1.tv_sec - t4.tv_sec)*1000000 + (t1.tv_usec - t4.tv_usec));
         
-        for (int j = 0; j < tLen; j++) {
-            key = keys[rand_key()];
+        //for (int j = 0; j < tLen; j++) {
 
             if (rand() % 100 < wPer) {
+             for (int j = 0; j < tLen; j++) {
+                key = keys[rand_key()];
                 gettimeofday(&t3, NULL);
-                client->Put(key, key);
+                client->Get(key, value);
+                client->Put(key, "aaaaaaaa");
                 gettimeofday(&t4, NULL);
                 
                 putCount++;
                 putLatency += ((t4.tv_sec - t3.tv_sec)*1000000 + (t4.tv_usec - t3.tv_usec));
+	     }
             } else {
+             for (int j = 0; j < tLen; j++) {
+                key = keys[rand_key()];
                 gettimeofday(&t3, NULL);
                 client->Get(key, value);
                 gettimeofday(&t4, NULL);
 
                 getCount++;
                 getLatency += ((t4.tv_sec - t3.tv_sec)*1000000 + (t4.tv_usec - t3.tv_usec));
+	     }
             }
-        }
+        //}
 
         gettimeofday(&t3, NULL);
         bool status = client->Commit();
