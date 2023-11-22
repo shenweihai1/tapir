@@ -256,10 +256,7 @@ main(int argc, char **argv)
         beginCount++;
         beginLatency += ((t1.tv_sec - t4.tv_sec)*1000000 + (t1.tv_usec - t4.tv_usec));
         
-
-        //for (int j = 0; j < tLen; j++) {
         int par_id = rand_key()%nShards;
-
         if (rand() % 100 < wPer) {
              for (int j = 0; j < tLen; j++) {
                 int b = rand_key();
@@ -292,9 +289,8 @@ main(int argc, char **argv)
 
                 getCount++;
                 getLatency += ((t4.tv_sec - t3.tv_sec)*1000000 + (t4.tv_usec - t3.tv_usec));
-	     }
-            }
-        //}
+	        }
+        }
 
         gettimeofday(&t3, NULL);
         bool status = client->Commit();
