@@ -224,10 +224,10 @@ main(int argc, char **argv)
         fprintf(stderr, "Could not read keys from: %s\n", keysPath);
         exit(0);
     }
-    for (int i = 0; i < nKeys; i++) {
-        getline(in, key);
-        keys.push_back(key);
-    }
+    // for (int i = 0; i < nKeys; i++) {
+    //     getline(in, key);
+    //     keys.push_back(key);
+    // }
     in.close();
 
 
@@ -258,17 +258,17 @@ main(int argc, char **argv)
         
 
         //for (int j = 0; j < tLen; j++) {
-        int a = rand_key();
+        int par_id = rand_key()%nShards;
 
         if (rand() % 100 < wPer) {
              for (int j = 0; j < tLen; j++) {
                 int b = rand_key();
-                b = b+(nShards - b%nShards)+a%nShards;
+                b = b+(nShards - b%nShards)+par_id;
                 if (b>=nKeys){
                     b = nKeys-1;
                 }
 
-                key = keys[b];
+                key = std::to_string(b);
                 gettimeofday(&t3, NULL);
                 client->Get(key, value);
                 client->Put(key, "aaaaaaaa");
@@ -280,12 +280,12 @@ main(int argc, char **argv)
         } else {
              for (int j = 0; j < tLen; j++) {
                 int b = rand_key();
-                b = b+(nShards - b%nShards)+a%nShards;
+                b = b+(nShards - b%nShards)+par_id;
                 if (b>=nKeys){
                     b = nKeys-1;
                 }
 
-                key = keys[b];
+                key = std::to_string(b);
                 gettimeofday(&t3, NULL);
                 client->Get(key, value);
                 gettimeofday(&t4, NULL);
