@@ -133,15 +133,12 @@ Server::UnloggedUpcall(const string &str1, string &str2)
     }
 }
 
+
+// weihshen: from the log history, the Sync and Merge only work for lock server
 void
 Server::Sync(const std::map<opid_t, RecordEntry>& record)
 {
     Panic("Unimplemented!");
-    /*
-     * weihshen: from the log history, the Sync and Merge only work for lock server
-     *
-     *
-     */
 }
 
 std::map<opid_t, std::string>
@@ -198,6 +195,16 @@ main(int argc, char **argv)
             } else {
                 fprintf(stderr, "unknown mode '%s'\n", optarg);
             }
+            break;
+        }
+
+        case 'e': 
+        {
+            break;
+        }
+
+        case 's':
+        {
             break;
         }
 

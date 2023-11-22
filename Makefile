@@ -7,7 +7,7 @@ CXX = g++
 LD = g++
 EXPAND = lib/tmpl/expand
 
-CFLAGS := -g -Wall -pthread -iquote.obj/gen -Wno-uninitialized -O2 # -DNASSERT
+CFLAGS := -g -Wall -pthread -L/usr/lib -iquote.obj/gen -Wno-uninitialized -O2 # -DNASSERT
 #CFLAGS := -g -Wall -pthread -iquote.obj/gen -Wno-uninitialized
 CXXFLAGS := -g -std=c++0x
 LDFLAGS := -levent_pthreads
@@ -219,14 +219,14 @@ DEPS := $(OBJS:.o=.d) $(OBJS:.o=-pic.d)
 GTEST_INTERNAL_SRCS := $(wildcard $(GTEST_DIR)/src/*.cc)
 GTEST_OBJS := $(patsubst %.cc,.obj/gtest/%.o,$(notdir $(GTEST_INTERNAL_SRCS)))
 
-$(GTEST_OBJS): .obj/gtest/%.o: $(GTEST_DIR)/src/%.cc
-	$(call compilecxx,CC,-I$(GTEST_DIR) -Wno-missing-field-initializers)
+#$(GTEST_OBJS): .obj/gtest/%.o: $(GTEST_DIR)/src/%.cc
+#	$(call compilecxx,CC,-I$(GTEST_DIR) -Wno-missing-field-initializers)
 
-$(GTEST) : .obj/gtest/gtest-all.o
-	$(call trace,AR,$@,$(AR) $(ARFLAGS) $@ $^)
+#$(GTEST) : .obj/gtest/gtest-all.o
+#	$(call trace,AR,$@,$(AR) $(ARFLAGS) $@ $^)
 
-$(GTEST_MAIN) : .obj/gtest/gtest-all.o .obj/gtest/gtest_main.o
-	$(call trace,AR,$@,$(AR) $(ARFLAGS) $@ $^)
+#$(GTEST_MAIN) : .obj/gtest/gtest-all.o .obj/gtest/gtest_main.o
+#	$(call trace,AR,$@,$(AR) $(ARFLAGS) $@ $^)
 
 #
 # Cleaning

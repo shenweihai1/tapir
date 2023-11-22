@@ -18,27 +18,27 @@ trap '{
 # Paths to source code and logfiles.
 # srcdir="/homes/sys/naveenks/Research/Tapir"
 # logdir="/biggerraid/users/naveenks/tapir"
-srcdir="/home/weihshen/Desktop/tapir"
-logdir="/home/weihshen/logs/tapir"
+srcdir="/home/weihai/tapir"
+logdir="/home/weihai/tapir/logs"
 
 
 # Machines on which replicas are running.
-replicas=("breakout" "pitfall" "qbert")
+replicas=("s0" "s1" "s2")
 
 # Machines on which clients are running.
-clients=("spyhunter")
+clients=("client0" "client1" "client2")
 
 client="benchClient"    # Which client (benchClient, retwisClient, etc)
 store="tapirstore"      # Which store (strongstore, weakstore, tapirstore)
 mode="txn-l"            # Mode for storage system.
 
-nshard=1     # number of shards
-nclient=1    # number of clients to run (per machine)
-nkeys=100000 # number of keys to use
+nshard=8     # number of shards
+nclient=10    # number of clients to run (per machine)
+nkeys=1000000 # number of keys to use
 rtime=10     # duration to run
 
-tlen=2       # transaction length
-wper=0       # writes percentage
+tlen=4       # transaction length
+wper=50       # writes percentage
 err=0        # error
 skew=0       # skew
 zalpha=-1    # zipf alpha (-1 to disable zipf and enable uniform)
@@ -61,8 +61,8 @@ echo "Mode: $mode"
 
 
 # Generate keys to be used in the experiment.
-echo "Generating random keys.."
-python key_generator.py $nkeys > keys
+# echo "Generating random keys.."
+# python key_generator.py $nkeys > keys
 
 
 # Start all replicas and timestamp servers
@@ -77,16 +77,15 @@ do
     "$srcdir/store/$store/server -m $mode -f $srcdir/store/tools/keys -k $nkeys -e $err -s $skew" $logdir
 done
 
-
 # Wait a bit for all replicas to start up
 sleep 2
-
 
 # Run the clients
 echo "Running the client(s)"
 count=0
 for host in ${clients[@]}
 do
+  echo "ssh $host"
   ssh $host "$srcdir/store/tools/start_client.sh \"$srcdir/store/benchmark/$client \
   -c $srcdir/store/tools/shard -N $nshard -f $srcdir/store/tools/keys \
   -d $rtime -l $tlen -w $wper -k $nkeys -m $mode -e $err -s $skew -z $zalpha\" \

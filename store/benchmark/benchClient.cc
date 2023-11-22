@@ -256,11 +256,19 @@ main(int argc, char **argv)
         beginCount++;
         beginLatency += ((t1.tv_sec - t4.tv_sec)*1000000 + (t1.tv_usec - t4.tv_usec));
         
-        //for (int j = 0; j < tLen; j++) {
 
-            if (rand() % 100 < wPer) {
+        //for (int j = 0; j < tLen; j++) {
+        int a = rand_key();
+
+        if (rand() % 100 < wPer) {
              for (int j = 0; j < tLen; j++) {
-                key = keys[rand_key()];
+                int b = rand_key();
+                b = b+(nShards - b%nShards)+a%nShards;
+                if (b>=nKeys){
+                    b = nKeys-1;
+                }
+
+                key = keys[b];
                 gettimeofday(&t3, NULL);
                 client->Get(key, value);
                 client->Put(key, "aaaaaaaa");
@@ -268,10 +276,16 @@ main(int argc, char **argv)
                 
                 putCount++;
                 putLatency += ((t4.tv_sec - t3.tv_sec)*1000000 + (t4.tv_usec - t3.tv_usec));
-	     }
-            } else {
+	        }
+        } else {
              for (int j = 0; j < tLen; j++) {
-                key = keys[rand_key()];
+                int b = rand_key();
+                b = b+(nShards - b%nShards)+a%nShards;
+                if (b>=nKeys){
+                    b = nKeys-1;
+                }
+
+                key = keys[b];
                 gettimeofday(&t3, NULL);
                 client->Get(key, value);
                 gettimeofday(&t4, NULL);
@@ -291,8 +305,10 @@ main(int argc, char **argv)
 
         long latency = (t2.tv_sec - t1.tv_sec)*1000000 + (t2.tv_usec - t1.tv_usec);
 
-        fprintf(stderr, "%d %ld.%06ld %ld.%06ld %ld %d\n", nTransactions+1, t1.tv_sec,
+        if (commitCount%1000==0){
+            fprintf(stderr, "%d %ld.%06ld %ld.%06ld %ld %d\n", nTransactions+1, t1.tv_sec,
                 t1.tv_usec, t2.tv_sec, t2.tv_usec, latency, status?1:0);
+        }
 
         if (status) {
             tCount++;
@@ -311,6 +327,7 @@ main(int argc, char **argv)
     fprintf(stderr, "# Get: %d, %lf\n", getCount, getLatency/getCount);
     fprintf(stderr, "# Put: %d, %lf\n", putCount, putLatency/putCount);
     fprintf(stderr, "# Commit: %d, %lf\n", commitCount, commitLatency/commitCount);
+    fprintf(stderr, "TPS: %lf\n", commitCount/(duration+0.0));
     
     return 0;
 }
