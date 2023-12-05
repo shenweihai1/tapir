@@ -1,1 +1,1 @@
-skill server; skill timeserver; skill benchClient;rm /home/weihai/tapir/*.bin;rm /home/weihai/tapir/logs/*.log; #rm /home/weihai/tapir/store/tools/keys
+skill server; skill timeserver; skill benchClient;rm /home/azureuser/tapir/*.bin;rm /home/azureuser/tapir/logs/*.log; #rm /home/azureuser/tapir/store/tools/keys

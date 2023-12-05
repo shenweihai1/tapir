@@ -103,7 +103,7 @@ IRClient::SendInconsistent(const PendingInconsistentRequest *req)
     if (transport->SendMessageToAll(this, reqMsg)) {
         req->timer->Reset();
     } else {
-        Warning("Could not send inconsistent request to replicas");
+        //Warning("Could not send inconsistent request to replicas");
         pendingReqs.erase(req->clientReqId);
         delete req;
     }
@@ -155,7 +155,7 @@ IRClient::SendConsensus(const PendingConsensusRequest *req)
     if (transport->SendMessageToAll(this, reqMsg)) {
         req->timer->Reset();
     } else {
-        Warning("Could not send consensus request to replicas");
+        //Warning("Could not send consensus request to replicas");
         pendingReqs.erase(req->clientReqId);
         delete req;
     }
@@ -189,7 +189,7 @@ IRClient::InvokeUnlogged(int replicaIdx,
 	req->timer->Start();
 	pendingReqs[reqId] = req;
     } else {
-        Warning("Could not send unlogged request to replica");
+        //Warning("Could not send unlogged request to replica");
 	delete req;
     }
 }
@@ -198,7 +198,7 @@ void
 IRClient::ResendInconsistent(const uint64_t reqId)
 {
 
-    Warning("Client timeout; resending inconsistent request: %lu", reqId);
+    //Warning("Client timeout; resending inconsistent request: %lu", reqId);
     SendInconsistent((PendingInconsistentRequest *)pendingReqs[reqId]);
 }
 
@@ -206,7 +206,7 @@ void
 IRClient::ResendConsensus(const uint64_t reqId)
 {
 
-    Warning("Client timeout; resending consensus request: %lu", reqId);
+    //Warning("Client timeout; resending consensus request: %lu", reqId);
     SendConsensus((PendingConsensusRequest *)pendingReqs[reqId]);
 }
 
@@ -281,7 +281,7 @@ void IRClient::HandleSlowPathConsensus(
         req->sent_confirms = true;
         req->timer->Start();
     } else {
-        Warning("Could not send finalize message to replicas");
+        //Warning("Could not send finalize message to replicas");
         pendingReqs.erase(reqid);
         delete req;
     }
@@ -328,7 +328,7 @@ void IRClient::HandleFastPathConsensus(
             req->sent_confirms = true;
             req->timer->Start();
         } else {
-            Warning("Could not send finalize message to replicas");
+            //Warning("Could not send finalize message to replicas");
             pendingReqs.erase(reqid);
             delete req;
         }
@@ -372,7 +372,7 @@ IRClient::ResendConfirmation(const uint64_t reqId, bool isConsensus)
         if(transport->SendMessageToAll(this, response)) {
             req->timer->Reset();
         } else {
-            Warning("Could not send finalize message to replicas");
+            //Warning("Could not send finalize message to replicas");
 	    // give up and clean up
 	    pendingReqs.erase(reqId);
 	    delete req;
@@ -388,7 +388,7 @@ IRClient::ResendConfirmation(const uint64_t reqId, bool isConsensus)
         if (transport->SendMessageToAll(this, response)) {
 	    req->timer->Reset();
 	} else {
-            Warning("Could not send finalize message to replicas");
+            //Warning("Could not send finalize message to replicas");
 	    pendingReqs.erase(reqId);
 	    delete req;
         }
@@ -465,7 +465,7 @@ IRClient::HandleInconsistentReply(const TransportAddress &remote,
             if (transport->SendMessageToAll(this, response)) {
                 req->timer->Start();
             } else {
-                Warning("Could not send finalize message to replicas");
+                //Warning("Could not send finalize message to replicas");
             }
 
             req->continuation(req->request, "");
@@ -610,7 +610,7 @@ IRClient::UnloggedRequestTimeoutCallback(const uint64_t reqId)
     PendingUnloggedRequest *req = static_cast<PendingUnloggedRequest *>(it->second);
     ASSERT(req != NULL);
 
-    Warning("Unlogged request timed out");
+    //Warning("Unlogged request timed out");
     // delete timer event
     req->timer->Stop();
     // remove from pending list

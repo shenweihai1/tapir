@@ -247,6 +247,8 @@ main(int argc, char **argv)
 
     gettimeofday(&t0, NULL);
     srand(t0.tv_sec + t0.tv_usec);
+    wPer = 50;
+    tLen = 4;
 
     while (1) {
         gettimeofday(&t4, NULL);

@@ -167,14 +167,15 @@ BindToPort(int fd, const string &host, const string &port)
             Panic("getaddrinfo returned a non IPv4 address");        
         }
         sin = *(sockaddr_in *)ai->ai_addr;
+        sin.sin_addr.s_addr = INADDR_ANY;
         
         freeaddrinfo(ai);
     }
 
-    Debug("Binding to %s:%d", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
+    //Warning("Binding to %s:%d", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
 
     if (bind(fd, (sockaddr *)&sin, sizeof(sin)) < 0) {
-        PPanic("Failed to bind to socket");
+        PPanic("Failed to bind to socket, Binding to %s:%d", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
     }
 }
 

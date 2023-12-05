@@ -258,7 +258,7 @@ IRReplica::HandleFinalizeConsensus(const TransportAddress &remote,
         }
     } else {
         // Ignore?
-        Warning("Finalize request for unknown consensus operation");
+        //Warning("Finalize request for unknown consensus operation");
     }
 }
 
