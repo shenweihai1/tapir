@@ -47,11 +47,11 @@ allHosts=( "${leaders[@]}" "${p1s[@]}" "${p2s[@]}" )
 #ls -lh
 #ls -lh | wc -l
 #sudo dpdk-devbind --status
-#ssh-keygen -f "/home/azureuser/.ssh/known_hosts" -R "127.0.0.1"
+#ssh-keygen -f "$HOME/.ssh/known_hosts" -R "127.0.0.1"
 #sudo systemctl status systemd-resolved
-cmd1="bash /home/azureuser/srolis/initial.sh" 
+cmd1="" 
 cmd2=""
-cmd3="bash ~/srolis/bash/op.sh kill"
+cmd3=""
 cmd4=""
 cmd5="bash ~/nfs.sh"
 cmd6="bash ~/srolis/nfs-client.sh" # re-mount, for jauns or other new folders
@@ -62,11 +62,8 @@ do
   host=${allHosts[$i]}
 
   if [ $cmd == 'init' ]; then
-    echo "init host $host"
-    ssh $host "$cmd1" &
+    echo ""
   elif [ $cmd == 'kill' ]; then
-    echo "kill: $host"
-    ssh $host "$cmd3" & 
     echo ""
   elif [ $cmd == 'mount' ]; then
     if [ $host == '10.1.0.48' ]; then    
@@ -88,7 +85,6 @@ do
   else
 	  :
   fi 
-
 
 done
 

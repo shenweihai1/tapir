@@ -1,5 +1,6 @@
 #!/bin/bash
 
+ROOT=$HOME
 trap '{
   echo "\nKilling all clients.. Please wait..";
   for host in ${clients[@]}
@@ -18,15 +19,24 @@ trap '{
 # Paths to source code and logfiles.
 # srcdir="/homes/sys/naveenks/Research/Tapir"
 # logdir="/biggerraid/users/naveenks/tapir"
-srcdir="/home/weihai/tapir"
-logdir="/home/weihai/tapir/logs"
+srcdir="$ROOT/tapir"
+logdir="$ROOT/tapir/logs"
 
+# Replicas
+s0="127.0.0.1"
+s1="127.0.0.1"
+s2="127.0.0.1"
+
+# Clients
+c0="127.0.0.1"
+c1="127.0.0.1"
+c2="127.0.0.1"
 
 # Machines on which replicas are running.
-replicas=("s0" "s1" "s2")
+replicas=("$s0" "$s1" "$s2")
 
 # Machines on which clients are running.
-clients=("client0" "client1" "client2")
+clients=("$c0" "$c1" "$c2")
 
 client="benchClient"    # Which client (benchClient, retwisClient, etc)
 store="tapirstore"      # Which store (strongstore, weakstore, tapirstore)
@@ -61,9 +71,12 @@ echo "Mode: $mode"
 
 
 # Generate keys to be used in the experiment.
-# echo "Generating random keys.."
-# python key_generator.py $nkeys > keys
-
+echo "Generating random keys.."
+if [ -f "keys" ]; then
+    echo "Skip keys generation!"
+else
+    python ./store/tools/key_generator.py $nkeys > ./store/tools/keys
+fi
 
 # Start all replicas and timestamp servers
 echo "Starting TimeStampServer replicas.."
@@ -110,7 +123,6 @@ for ((i=0; i<$nshard; i++))
 do
   $srcdir/store/tools/stop_replica.sh $srcdir/store/tools/shard$i.config > /dev/null 2>&1
 done
-
 
 # Process logs
 echo "Processing logs"
