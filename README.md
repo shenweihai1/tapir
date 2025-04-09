@@ -57,4 +57,8 @@ python3 generater.py
 
 # Run a test, and then check logs under ./tapir/logs
 bash cmds-1.sh
+
+# Get the Throughput
+cat ./logs/client-*.log|ag 'TPS'| ag 'TPS' | wc -l
+cat ./logs/client-*.log| ag 'TPS'| awk '{sum += $2} END {print sum}'
 ```
